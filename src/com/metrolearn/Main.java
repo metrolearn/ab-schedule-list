@@ -1,4 +1,6 @@
-package ab_schedule_list;
+package com.metrolearn;
+
+import ab_schedule_list.SchoolDay;
 
 import java.time.LocalDate;
 import java.util.Stack;
@@ -6,8 +8,6 @@ import java.util.Stack;
 public class Main {
 
     public static void main(String[] args) {
-
-
 
 
         Stack<LocalDate> nonSchoolDays = new Stack<LocalDate>();
@@ -28,7 +28,7 @@ public class Main {
 
         //Day and Evening Conferences
         nonSchoolDays.push(LocalDate.of(2018, 11, 19));
-        nonSchoolDays.push(LocalDate.of(2018, 11,20));
+        nonSchoolDays.push(LocalDate.of(2018, 11, 20));
 
         //School Closed and District Offices Open
         nonSchoolDays.push(LocalDate.of(2018, 11, 21));
@@ -80,28 +80,26 @@ public class Main {
 
         //vars
         Stack<SchoolDay> schoolDays = new Stack<SchoolDay>();
-        LocalDate  startOfYear= LocalDate.of(2018, 8, 27);
-        for (	int daysToAdd = 0; daysToAdd <= 365; daysToAdd++) {
+        LocalDate startOfYear = LocalDate.of(2018, 8, 27);
+        for (int daysToAdd = 0; daysToAdd <= 365; daysToAdd++) {
 
             LocalDate currDate = startOfYear.plusDays(daysToAdd);
-            int currMonth = currDate.getMonthValue();
-            int currDay = currDate.getDayOfMonth();
             Boolean schoolDay;
 
-            SchoolDay s = new SchoolDay(currMonth,currDay,currDate.getYear());
+            SchoolDay s = new SchoolDay(currDate);
             schoolDay = isWeekDay(currDate);
 
-            if(schoolDay)
+            if (schoolDay)
                 schoolDays.push(s);
-
 
 
         }
 
+        for(SchoolDay s : schoolDays) {   // foreach grade in grades
+            System.out.print(s); // print that grade
+        }
 
 
-
-        System.out.print(schoolDays);
     }
 
     /**
@@ -110,10 +108,7 @@ public class Main {
     private static boolean isWeekDay(LocalDate currDate) {
         // true if currDate is a Sat or Sun
 
-        if(currDate.getDayOfWeek().getValue() >= 6) {
-            return false;
-        }
-        return true;
+        return currDate.getDayOfWeek().getValue() < 6;
     }
 
 }
