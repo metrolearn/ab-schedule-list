@@ -2,7 +2,7 @@ package enums;
 
 public enum DayFlag {
 	
-	Aday, Bday, Default 
+	Aday, Bday, ABday, Default
 	
 	
 

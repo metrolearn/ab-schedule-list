@@ -1,81 +1,96 @@
 package ab_schedule_list;
 
-import enums.*;
+import enums.DayFlag;
+import enums.DayType;
 
 import java.time.LocalDate;
+import java.util.Objects;
+import java.util.Stack;
 
 public class SchoolDay {
 
-    private DayFlag dayFlag;
-    private DayType dayType;
-    private Period period;
-    private LocalDate localDate;
-    private String description;
-    private Boolean nonSchoolDay;
+  private DayFlag dayFlag;
+  private DayType dayType;
+  private LocalDate localDate;
+  private String description;
+  private Stack<LocalDate> periods;
 
+  public SchoolDay() {
 
-    public SchoolDay() {
+    setDayFlag(DayFlag.Default);
+    setDayType(DayType.Default);
+  }
 
-        setDayFlag(DayFlag.Default);
-        setDayType(DayType.Default);
-        setPeriod(Period.Default);
+  public SchoolDay(LocalDate localDate) {
+    super();
+    this.localDate = localDate;
+  }
 
+  public LocalDate getLocalDate() {
+    return localDate;
+  }
+
+  public void setLocalDate(LocalDate localDate) {
+    this.localDate = localDate;
+  }
+
+  public Stack<LocalDate> getPeriods() {
+    return periods;
+  }
+
+  public void setPeriods(Stack<LocalDate> periods) {
+    this.periods = periods;
+  }
+
+  public DayType getDayType() {
+    return dayType;
+  }
+
+  public void setDayType(DayType dayType) {
+    this.dayType = dayType;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public DayFlag getDayFlag() {
+    return dayFlag;
+  }
+
+  public void setDayFlag(DayFlag dayFlag) {
+    this.dayFlag = dayFlag;
+  }
+
+    @Override
+    public String toString() {
+        return "SchoolDay{" +
+                "dayFlag=" + dayFlag +
+                ", dayType=" + dayType +
+                ", localDate=" + localDate +
+                ", description='" + description + '\'' +
+                ", periods=" + periods +
+                '}';
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SchoolDay)) return false;
+        SchoolDay schoolDay = (SchoolDay) o;
+        return getDayFlag() == schoolDay.getDayFlag() &&
+                getDayType() == schoolDay.getDayType() &&
+                Objects.equals(getLocalDate(), schoolDay.getLocalDate()) &&
+                Objects.equals(getDescription(), schoolDay.getDescription()) &&
+                Objects.equals(getPeriods(), schoolDay.getPeriods());
     }
 
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDayFlag(), getDayType(), getLocalDate(), getDescription(), getPeriods());
     }
-
-    public SchoolDay(LocalDate localDate) {
-        super();
-        this.localDate = localDate;
-
-
-    }
-
-
-    public DayType getDayType() {
-        return dayType;
-    }
-
-    public void setDayType(DayType dayType) {
-        this.dayType = dayType;
-    }
-
-    public Period getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(Period period) {
-        this.period = period;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getNonSchoolDay() {
-        return nonSchoolDay;
-    }
-
-    public void setNonSchoolDay(Boolean nonSchoolDay) {
-        this.nonSchoolDay = nonSchoolDay;
-    }
-
-    public DayFlag getDayFlag() {
-        return dayFlag;
-    }
-
-    public void setDayFlag(DayFlag dayFlag) {
-        this.dayFlag = dayFlag;
-    }
-
 }
