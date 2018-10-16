@@ -8,6 +8,12 @@ public enum DayType {
 	BFlx,
 	AMet,
 	BMet,
+	AGLMet,
+	BGLMet,
+	AFri,
+	BFri,
+	ABDay,
 	Default
+
 
 }

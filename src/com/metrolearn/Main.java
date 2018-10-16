@@ -2,7 +2,9 @@ package com.metrolearn;
 
 import ab_schedule_list.SchoolDay;
 import enums.DayFlag;
+import enums.DayType;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Stack;
 
@@ -14,12 +16,56 @@ public class Main {
     Stack<SchoolDay> schoolDays = new Stack<SchoolDay>();
     Stack<LocalDate> ABDays = new Stack<LocalDate>();
 
-    ABDays.add(LocalDate.of(2018, 10, 10));
-
+    addABDays(ABDays);
     setNonSchoolDays(nonSchoolDays);
 
-    // vars
+    /* Start of Year */
     LocalDate startOfYear = LocalDate.of(2018, 8, 29);
+    /* Set Basis for AB Days*/
+    setABDays(nonSchoolDays, schoolDays, ABDays, startOfYear);
+    /* Set Day Flags based on AB Days and Days of the week */
+    setDayFlags(schoolDays);
+
+    for (SchoolDay s : schoolDays) { // foreach grade in grades
+      System.out.println(
+          s.getLocalDate() + " " + s.getDayFlag() + " " + s.getDayType()); // print that grade
+    }
+  }
+
+  private static void setDayFlags(Stack<SchoolDay> schoolDays) {
+    for (SchoolDay s : schoolDays) {
+      DayOfWeek currDayOfWeek = s.getLocalDate().getDayOfWeek();
+      DayFlag currDayFlag = s.getDayFlag();
+      switch (currDayOfWeek) {
+        case MONDAY:
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AReg);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BReg);
+          break;
+        case TUESDAY:
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AMet);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BMet);
+          break;
+        case WEDNESDAY:
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AFlx);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BFlx);
+          break;
+        case THURSDAY:
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AGLMet);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BGLMet);
+          break;
+        case FRIDAY:
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AFri);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BFri);
+          break;
+      }
+    }
+  }
+
+  private static void setABDays(
+      Stack<LocalDate> nonSchoolDays,
+      Stack<SchoolDay> schoolDays,
+      Stack<LocalDate> ABDays,
+      LocalDate startOfYear) {
     for (int daysToAdd = 0; daysToAdd <= 365; daysToAdd++) {
 
       LocalDate currDate = startOfYear.plusDays(daysToAdd);
@@ -53,10 +99,10 @@ public class Main {
         }
       }
     }
+  }
 
-    for (SchoolDay s : schoolDays) { // foreach grade in grades
-      System.out.println(s.getLocalDate() + " " + s.getDayFlag()); // print that grade
-    }
+  private static void addABDays(Stack<LocalDate> ABDays) {
+    ABDays.add(LocalDate.of(2018, 10, 10));
   }
 
   private static void setNonSchoolDays(Stack<LocalDate> nonSchoolDays) {
