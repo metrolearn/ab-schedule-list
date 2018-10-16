@@ -1,0 +1,32 @@
+[
+  {
+    "Period": "Period 1",
+    "Begin": "8:15",
+    "End": "9:30"
+  },
+  {
+    "Period": "Period 2",
+    "Begin": "9:40",
+    "End": "10:55"
+  },
+  {
+    "Period": "Period 3",
+    "Begin": "11:00",
+    "End": "12:15"
+  },
+  {
+    "Period": "Lunch",
+    "Begin": "12:15",
+    "End": "12:55"
+  },
+  {
+    "Period": "Period 4",
+    "Begin": "12:55",
+    "End": "2:10"
+  },
+  {
+    "Period": "Flex - Support",
+    "Begin": "2:15",
+    "End": "3:15"
+  }
+]

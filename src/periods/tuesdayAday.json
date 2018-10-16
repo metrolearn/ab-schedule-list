@@ -1,0 +1,32 @@
+[
+  {
+    "Period": "Period 1",
+    "Begin": "8:15",
+    "End": "9:35"
+  },
+  {
+    "Period": "Period 2",
+    "Begin": "9:50",
+    "End": "11:10"
+  },
+  {
+    "Period": "Metro",
+    "Begin": "11:15",
+    "End": "11:50"
+  },
+  {
+    "Period": "Lunch",
+    "Begin": "11:50",
+    "End": "12:30"
+  },
+  {
+    "Period": "Period 3",
+    "Begin": "12:30",
+    "End": "1:50"
+  },
+  {
+    "Period": "Period 4",
+    "Begin": "1:55",
+    "End": "3:15"
+  }
+]
