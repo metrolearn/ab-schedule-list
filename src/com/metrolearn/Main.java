@@ -1,6 +1,7 @@
 package com.metrolearn;
 
 import ab_schedule_list.SchoolDay;
+import enums.DayFlag;
 
 import java.time.LocalDate;
 import java.util.Stack;
@@ -10,7 +11,55 @@ public class Main {
   public static void main(String[] args) {
 
     Stack<LocalDate> nonSchoolDays = new Stack<LocalDate>();
+    Stack<SchoolDay> schoolDays = new Stack<SchoolDay>();
+    Stack<LocalDate> ABDays = new Stack<LocalDate>();
 
+    ABDays.add(LocalDate.of(2018, 10, 10));
+
+    setNonSchoolDays(nonSchoolDays);
+
+    // vars
+    LocalDate startOfYear = LocalDate.of(2018, 8, 29);
+    for (int daysToAdd = 0; daysToAdd <= 365; daysToAdd++) {
+
+      LocalDate currDate = startOfYear.plusDays(daysToAdd);
+      Boolean schoolDay;
+
+      SchoolDay s = new SchoolDay(currDate);
+      schoolDay = isWeekDay(currDate);
+
+      if (schoolDay) {
+        if (nonSchoolDays.search(currDate) == -1) {
+          // Start on Bday.
+          if (schoolDays.size() == 0) {
+
+            s.setDayFlag(DayFlag.Bday);
+          }
+          if (schoolDays.size() > 0) {
+
+            DayFlag dayFlagPeek = schoolDays.peek().getDayFlag();
+            if (dayFlagPeek == DayFlag.Bday || dayFlagPeek == DayFlag.ABday) {
+              s.setDayFlag(DayFlag.Aday);
+            } else {
+              s.setDayFlag(DayFlag.Bday);
+            }
+
+            if (ABDays.search(currDate) != -1) {
+              s.setDayFlag(DayFlag.ABday);
+            }
+          }
+
+          if (currDate.isBefore(LocalDate.of(2019, 6, 10))) schoolDays.push(s);
+        }
+      }
+    }
+
+    for (SchoolDay s : schoolDays) { // foreach grade in grades
+      System.out.println(s.getLocalDate() + " " + s.getDayFlag()); // print that grade
+    }
+  }
+
+  private static void setNonSchoolDays(Stack<LocalDate> nonSchoolDays) {
     // Year Month Day
     // School and District Offices Closed
     nonSchoolDays.push(LocalDate.of(2018, 9, 3));
@@ -74,24 +123,6 @@ public class Main {
 
     // School and District Offices Closed
     nonSchoolDays.push(LocalDate.of(2019, 5, 27));
-
-    // vars
-    Stack<SchoolDay> schoolDays = new Stack<SchoolDay>();
-    LocalDate startOfYear = LocalDate.of(2018, 8, 27);
-    for (int daysToAdd = 0; daysToAdd <= 365; daysToAdd++) {
-
-      LocalDate currDate = startOfYear.plusDays(daysToAdd);
-      Boolean schoolDay;
-
-      SchoolDay s = new SchoolDay(currDate);
-      schoolDay = isWeekDay(currDate);
-
-      if (schoolDay) schoolDays.push(s);
-    }
-
-    for (SchoolDay s : schoolDays) { // foreach grade in grades
-      System.out.print(s); // print that grade
-    }
   }
 
   /** @param currDate */
