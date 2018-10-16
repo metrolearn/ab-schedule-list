@@ -7,11 +7,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import enums.DayFlag;
 import enums.DayType;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -35,10 +35,26 @@ public class Main {
     /* Set Day Flags based on AB Days and Days of the week */
     setDayFlags(schoolDays);
 
-        String fileName = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsJson\\esrFridayAday.json";
+        Reader in = null;
+        try {
+            in = new FileReader("C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\esrFridayAday.csv");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Iterable<CSVRecord> records = null;
+        try {
+            assert in != null;
+            records = CSVFormat.DEFAULT.withHeader().parse(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (CSVRecord record : records) {
+            String period = record.get(0);
+            String begin = record.get(1);
+            String end = record.get(2);
 
-        JsonArray array = getJsonElements(fileName);
-        System.out.println(array.get(0));
+        }
+
 
 //        for (SchoolDay s : schoolDays) { // foreach grade in grades
 //      System.out.println(
@@ -46,16 +62,7 @@ public class Main {
 //    }
   }
 
-    private static JsonArray getJsonElements(String fileName) {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(fileName));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        JsonParser parser = new JsonParser();
-        return parser.parse(br).getAsJsonArray();
-    }
+
 
     private static void setDayFlags(Stack<SchoolDay> schoolDays) {
     for (SchoolDay s : schoolDays) {
