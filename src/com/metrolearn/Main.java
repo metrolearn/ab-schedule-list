@@ -1,17 +1,25 @@
 package com.metrolearn;
 
 import ab_schedule_list.SchoolDay;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import enums.DayFlag;
 import enums.DayType;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Stack;
 
 public class Main {
 
-  public static void main(String[] args) {
+    public static void main(String[] args) {
 
     Stack<LocalDate> nonSchoolDays = new Stack<LocalDate>();
     Stack<SchoolDay> schoolDays = new Stack<SchoolDay>();
@@ -27,19 +35,29 @@ public class Main {
     /* Set Day Flags based on AB Days and Days of the week */
     setDayFlags(schoolDays);
 
+        String fileName = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsJson\\esrFridayAday.json";
 
+        JsonArray array = getJsonElements(fileName);
+        System.out.println(array.get(0));
 
-
-
-
-
-    for (SchoolDay s : schoolDays) { // foreach grade in grades
-      System.out.println(
-          s.getLocalDate() + " " + s.getDayFlag() + " " + s.getDayType()); // print that grade
-    }
+//        for (SchoolDay s : schoolDays) { // foreach grade in grades
+//      System.out.println(
+//          s.getLocalDate() + " " + s.getDayFlag() + " " + s.getDayType()); // print that grade
+//    }
   }
 
-  private static void setDayFlags(Stack<SchoolDay> schoolDays) {
+    private static JsonArray getJsonElements(String fileName) {
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(fileName));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        JsonParser parser = new JsonParser();
+        return parser.parse(br).getAsJsonArray();
+    }
+
+    private static void setDayFlags(Stack<SchoolDay> schoolDays) {
     for (SchoolDay s : schoolDays) {
       DayOfWeek currDayOfWeek = s.getLocalDate().getDayOfWeek();
       DayFlag currDayFlag = s.getDayFlag();

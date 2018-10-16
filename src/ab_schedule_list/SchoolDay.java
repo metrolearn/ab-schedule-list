@@ -73,7 +73,7 @@ public class SchoolDay {
                 ", dayType=" + dayType +
                 ", localDate=" + localDate +
                 ", description='" + description + '\'' +
-                ", periods=" + periods +
+                ", periodsJson=" + periods +
                 '}';
     }
 
