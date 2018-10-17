@@ -76,8 +76,7 @@ public class Main {
         thursdayAdayStack,
         thursdayBdayStack,
         wensdayAdayStack,
-
-
+        wensdayBdayStack);
 
     /* Printing List */
     for (SchoolDay s : schoolDays) { // foreach grade in grades
