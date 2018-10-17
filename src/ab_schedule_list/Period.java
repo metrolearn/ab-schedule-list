@@ -1,6 +1,7 @@
 package ab_schedule_list;
 
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Period {
 
@@ -39,5 +40,29 @@ public class Period {
 
     public void setEnd(LocalTime end) {
         this.end = end;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Period)) return false;
+        Period period = (Period) o;
+        return Objects.equals(getName(), period.getName()) &&
+                Objects.equals(getBegin(), period.getBegin()) &&
+                Objects.equals(getEnd(), period.getEnd());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getBegin(), getEnd());
+    }
+
+    @Override
+    public String toString() {
+        return "Period{" +
+                "name='" + name + '\'' +
+                ", begin=" + begin +
+                ", end=" + end +
+                '}';
     }
 }

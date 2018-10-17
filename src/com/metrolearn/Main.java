@@ -7,8 +7,10 @@ import enums.DayType;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,18 +18,18 @@ import java.util.Stack;
 
 public class Main {
 
-    private static final String ER_FRIDAY_ADAY_FN = "periodsCSV/erFridayAday.csv";
-    private static final String ER_FRIDAY_BDAY_FN = "periodsCSV/erFridayBday.csv";
-    private static final String FRIDAY_ADAY_FN = "periodsCSV/fridayAday.csv";
-    private static final String FRIDAY_BDAY_FN = "periodsCSV/fridayBday.csv";
-    private static final String MONDAY_ADAY_FN = "periodsCSV/mondayAday.csv";
-    private static final String MONDAY_BDAY_FN = "periodsCSV/mondayBday.csv";
-    private static final String THURSDAY_ADAY_FN = "periodsCSV/thursdayAday.csv";
-    private static final String THURSDAY_BDAY_FN = "periodsCSV/thursdayBday.csv";
-    private static final String WENSDAY_ADAY_FN = "periodsCSV/wensdayAday.csv";
-    private static final String WENSDAY_BDAY_FN = "periodsCSV/wensdayBday.csv";
+  private static final String ER_FRIDAY_ADAY_FN = "periodsCSV/erFridayAday.csv";
+  private static final String ER_FRIDAY_BDAY_FN = "periodsCSV/erFridayBday.csv";
+  private static final String FRIDAY_ADAY_FN = "periodsCSV/fridayAday.csv";
+  private static final String FRIDAY_BDAY_FN = "periodsCSV/fridayBday.csv";
+  private static final String MONDAY_ADAY_FN = "periodsCSV/mondayAday.csv";
+  private static final String MONDAY_BDAY_FN = "periodsCSV/mondayBday.csv";
+  private static final String THURSDAY_ADAY_FN = "periodsCSV/thursdayAday.csv";
+  private static final String THURSDAY_BDAY_FN = "periodsCSV/thursdayBday.csv";
+  private static final String WENSDAY_ADAY_FN = "periodsCSV/wensdayAday.csv";
+  private static final String WENSDAY_BDAY_FN = "periodsCSV/wensdayBday.csv";
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
     Stack<LocalDate> nonSchoolDays = new Stack<LocalDate>();
     Stack<SchoolDay> schoolDays = new Stack<SchoolDay>();
@@ -53,49 +55,72 @@ public class Main {
     setABDays(nonSchoolDays, schoolDays, ABDays, startOfYear);
     /* Set Day Flags based on AB Days and Days of the week */
     setDayFlags(schoolDays);
+    /* Set Periods Based on days */
+
+      for(SchoolDay s : schoolDays){
+          DayOfWeek currDayOfWeek = s.getLocalDate().getDayOfWeek();
+          DayType currDayType = s.getDayType();
+
+          switch (currDayOfWeek){
+              case MONDAY:
+                  if (currDayType == DayType.AReg) s.setPeriods(mondayAdayStack);
+                  if (currDayType == DayType.BReg) s.setPeriods(mondayBdayStack);
+              case TUESDAY:
+                  break;
+              case WEDNESDAY:
+                  break;
+              case THURSDAY:
+                  break;
+              case FRIDAY:
+                  break;
+              case SATURDAY:
+                  break;
+              case SUNDAY:
+                  break;
+          }
+
+      }
+
+
 
     /* Printing List */
-        for (SchoolDay s : schoolDays) { // foreach grade in grades
+    for (SchoolDay s : schoolDays) { // foreach grade in grades
       System.out.println(
-          s.getLocalDate() + " " + s.getDayFlag() + " " + s.getDayType()); // print that grade
+          s.getLocalDate() + " " + s.getDayFlag() + " " + s.getDayType() +" "+ s.getPeriods()); // print that grade
     }
   }
 
-    private static Stack<Period> createPeriodStack(String fileName) {
-        Stack<Period> periods = new Stack<Period>();
-        Reader in = null;
-        try {
-            in = new FileReader(fileName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Iterable<CSVRecord> records = null;
-        try {
-            assert in != null;
-            records = CSVFormat.DEFAULT.withHeader().parse(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (CSVRecord record : records) {
-            String name = record.get(0);
-            String begin[] = record.get(1).split(":");
-            String end[] = record.get(2).split(":");
+  private static Stack<Period> createPeriodStack(String fileName) {
+    Stack<Period> periods = new Stack<Period>();
+    Reader in = null;
+    try {
+      in = new FileReader(fileName);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    Iterable<CSVRecord> records = null;
+    try {
+      assert in != null;
+      records = CSVFormat.DEFAULT.withHeader().parse(in);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    for (CSVRecord record : records) {
+      String name = record.get(0);
+      String begin[] = record.get(1).split(":");
+      String end[] = record.get(2).split(":");
 
-            LocalTime begin_lt = LocalTime.of(Integer.parseInt(begin[0]), Integer.parseInt(begin[1].trim()));
-            LocalTime end_lt = LocalTime.of(Integer.parseInt(end[0]), Integer.parseInt(end[1].trim()));
+      LocalTime begin_lt =
+          LocalTime.of(Integer.parseInt(begin[0]), Integer.parseInt(begin[1].trim()));
+      LocalTime end_lt = LocalTime.of(Integer.parseInt(end[0]), Integer.parseInt(end[1].trim()));
 
-
-            periods.add(new Period(name,begin_lt,end_lt));
-
-
-
-        }
-
-        return periods;
+      periods.add(new Period(name, begin_lt, end_lt));
     }
 
+    return periods;
+  }
 
-    private static void setDayFlags(Stack<SchoolDay> schoolDays) {
+  private static void setDayFlags(Stack<SchoolDay> schoolDays) {
     for (SchoolDay s : schoolDays) {
       DayOfWeek currDayOfWeek = s.getLocalDate().getDayOfWeek();
       DayFlag currDayFlag = s.getDayFlag();

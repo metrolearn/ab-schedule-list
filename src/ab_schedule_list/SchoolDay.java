@@ -66,31 +66,37 @@ public class SchoolDay {
     this.dayFlag = dayFlag;
   }
 
-    @Override
-    public String toString() {
-        return "SchoolDay{" +
-                "dayFlag=" + dayFlag +
-                ", dayType=" + dayType +
-                ", localDate=" + localDate +
-                ", description='" + description + '\'' +
-                ", periodsJson=" + periods +
-                '}';
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof SchoolDay)) return false;
+    SchoolDay schoolDay = (SchoolDay) o;
+    return getDayFlag() == schoolDay.getDayFlag()
+        && getDayType() == schoolDay.getDayType()
+        && Objects.equals(getLocalDate(), schoolDay.getLocalDate())
+        && Objects.equals(getDescription(), schoolDay.getDescription())
+        && Objects.equals(getPeriods(), schoolDay.getPeriods());
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SchoolDay)) return false;
-        SchoolDay schoolDay = (SchoolDay) o;
-        return getDayFlag() == schoolDay.getDayFlag() &&
-                getDayType() == schoolDay.getDayType() &&
-                Objects.equals(getLocalDate(), schoolDay.getLocalDate()) &&
-                Objects.equals(getDescription(), schoolDay.getDescription()) &&
-                Objects.equals(getPeriods(), schoolDay.getPeriods());
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(getDayFlag(), getDayType(), getLocalDate(), getDescription(), getPeriods());
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getDayFlag(), getDayType(), getLocalDate(), getDescription(), getPeriods());
-    }
+  @Override
+  public String toString() {
+    return "SchoolDay{"
+        + "dayFlag="
+        + dayFlag
+        + ", dayType="
+        + dayType
+        + ", localDate="
+        + localDate
+        + ", description='"
+        + description
+        + '\''
+        + ", periods="
+        + periods
+        + '}';
+  }
 }
