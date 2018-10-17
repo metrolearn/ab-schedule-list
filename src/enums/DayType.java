@@ -13,6 +13,7 @@ public enum DayType {
 	AFri,
 	BFri,
 	ABDay,
+	ErF,
 	Default
 
 
