@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ab-schedule-list.iml" filepath="$PROJECT_DIR$/.idea/ab-schedule-list.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ab-schedule-list.iml" filepath="$PROJECT_DIR$/ab-schedule-list.iml" />
     </modules>
   </component>
 </project>

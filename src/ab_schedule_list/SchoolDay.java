@@ -13,7 +13,7 @@ public class SchoolDay {
   private DayType dayType;
   private LocalDate localDate;
   private String description;
-  private Stack<LocalDate> periods;
+  private Stack<Period> periods;
 
   public SchoolDay() {
 
@@ -26,20 +26,20 @@ public class SchoolDay {
     this.localDate = localDate;
   }
 
+  public Stack<Period> getPeriods() {
+    return periods;
+  }
+
+  public void setPeriods(Stack<Period> periods) {
+    this.periods = periods;
+  }
+
   public LocalDate getLocalDate() {
     return localDate;
   }
 
   public void setLocalDate(LocalDate localDate) {
     this.localDate = localDate;
-  }
-
-  public Stack<LocalDate> getPeriods() {
-    return periods;
-  }
-
-  public void setPeriods(Stack<LocalDate> periods) {
-    this.periods = periods;
   }
 
   public DayType getDayType() {

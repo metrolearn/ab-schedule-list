@@ -1,5 +1,6 @@
 package com.metrolearn;
 
+import ab_schedule_list.Period;
 import ab_schedule_list.SchoolDay;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -15,6 +16,7 @@ import java.io.*;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Stack;
 
 public class Main {
@@ -35,9 +37,39 @@ public class Main {
     /* Set Day Flags based on AB Days and Days of the week */
     setDayFlags(schoolDays);
 
+        String erFridayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\erFridayAday.csv";
+        String erFridayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\erFridayBday.csv";
+        String fridayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\fridayAday.csv";
+        String fridayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\fridayBday.csv";
+        String mondayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\mondayAday.csv";
+        String mondayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\mondayBday.csv";
+        String thursdayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\thursdayAday.csv";
+        String thursdayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\thursdayBday.csv";
+        String wensdayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\wensdayAday.csv";
+        String wensdayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\wensdayBday.csv";
+
+        Stack<Period> erFridayAdayStack = createPeriodStack(erFridayAdayFn);
+        Stack<Period> erFridayBdayStack = createPeriodStack(erFridayBdayFn);
+        Stack<Period> fridayAdayStack = createPeriodStack(fridayAdayFn);
+        Stack<Period> fridayBdayStack = createPeriodStack(fridayBdayFn);
+        Stack<Period> mondayAdayStack = createPeriodStack(mondayAdayFn);
+        Stack<Period> mondayBdayStack = createPeriodStack(mondayBdayFn);
+        Stack<Period> thursdayAdayStack = createPeriodStack(thursdayAdayFn);
+        Stack<Period> thursdayBdayStack = createPeriodStack(thursdayBdayFn);
+        Stack<Period> wensdayAdayStack = createPeriodStack(wensdayAdayFn);
+        Stack<Period> wensdayBdayStack = createPeriodStack(wensdayBdayFn);
+
+        for (SchoolDay s : schoolDays) { // foreach grade in grades
+      System.out.println(
+          s.getLocalDate() + " " + s.getDayFlag() + " " + s.getDayType()); // print that grade
+    }
+  }
+
+    private static Stack<Period> createPeriodStack(String fileName) {
+        Stack<Period> periods = new Stack<Period>();
         Reader in = null;
         try {
-            in = new FileReader("C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\esrFridayAday.csv");
+            in = new FileReader(fileName);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -49,19 +81,22 @@ public class Main {
             e.printStackTrace();
         }
         for (CSVRecord record : records) {
-            String period = record.get(0);
-            String begin = record.get(1);
-            String end = record.get(2);
+            String name = record.get(0);
+            String begin[] = record.get(1).split(":");
+            String end[] = record.get(2).split(":");
+
+            LocalTime begin_lt = LocalTime.of(Integer.parseInt(begin[0]), Integer.parseInt(begin[1].trim()));
+            LocalTime end_lt = LocalTime.of(Integer.parseInt(end[0]), Integer.parseInt(end[1].trim()));
+
+
+            periods.add(new Period(name,begin_lt,end_lt));
+
+
 
         }
 
-
-//        for (SchoolDay s : schoolDays) { // foreach grade in grades
-//      System.out.println(
-//          s.getLocalDate() + " " + s.getDayFlag() + " " + s.getDayType()); // print that grade
-//    }
-  }
-
+        return periods;
+    }
 
 
     private static void setDayFlags(Stack<SchoolDay> schoolDays) {
