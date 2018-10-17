@@ -2,18 +2,13 @@ package com.metrolearn;
 
 import ab_schedule_list.Period;
 import ab_schedule_list.SchoolDay;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import enums.DayFlag;
 import enums.DayType;
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+
 import java.io.*;
-import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,15 +16,37 @@ import java.util.Stack;
 
 public class Main {
 
+    private static final String ER_FRIDAY_ADAY_FN = "periodsCSV/erFridayAday.csv";
+    private static final String ER_FRIDAY_BDAY_FN = "periodsCSV/erFridayBday.csv";
+    private static final String FRIDAY_ADAY_FN = "periodsCSV/fridayAday.csv";
+    private static final String FRIDAY_BDAY_FN = "periodsCSV/fridayBday.csv";
+    private static final String MONDAY_ADAY_FN = "periodsCSV/mondayAday.csv";
+    private static final String MONDAY_BDAY_FN = "periodsCSV/mondayBday.csv";
+    private static final String THURSDAY_ADAY_FN = "periodsCSV/thursdayAday.csv";
+    private static final String THURSDAY_BDAY_FN = "periodsCSV/thursdayBday.csv";
+    private static final String WENSDAY_ADAY_FN = "periodsCSV/wensdayAday.csv";
+    private static final String WENSDAY_BDAY_FN = "periodsCSV/wensdayBday.csv";
+
     public static void main(String[] args) {
 
     Stack<LocalDate> nonSchoolDays = new Stack<LocalDate>();
     Stack<SchoolDay> schoolDays = new Stack<SchoolDay>();
     Stack<LocalDate> ABDays = new Stack<LocalDate>();
+    Stack<Period> erFridayAdayStack = createPeriodStack(ER_FRIDAY_ADAY_FN);
+    Stack<Period> erFridayBdayStack = createPeriodStack(ER_FRIDAY_BDAY_FN);
+    Stack<Period> fridayAdayStack = createPeriodStack(FRIDAY_ADAY_FN);
+    Stack<Period> fridayBdayStack = createPeriodStack(FRIDAY_BDAY_FN);
+    Stack<Period> mondayAdayStack = createPeriodStack(MONDAY_ADAY_FN);
+    Stack<Period> mondayBdayStack = createPeriodStack(MONDAY_BDAY_FN);
+    Stack<Period> thursdayAdayStack = createPeriodStack(THURSDAY_ADAY_FN);
+    Stack<Period> thursdayBdayStack = createPeriodStack(THURSDAY_BDAY_FN);
+    Stack<Period> wensdayAdayStack = createPeriodStack(WENSDAY_ADAY_FN);
+    Stack<Period> wensdayBdayStack = createPeriodStack(WENSDAY_BDAY_FN);
 
+    /*Defining ABDays */
     addABDays(ABDays);
+    /*Defining Non School Days*/
     setNonSchoolDays(nonSchoolDays);
-
     /* Start of Year */
     LocalDate startOfYear = LocalDate.of(2018, 8, 29);
     /* Set Basis for AB Days*/
@@ -37,28 +54,7 @@ public class Main {
     /* Set Day Flags based on AB Days and Days of the week */
     setDayFlags(schoolDays);
 
-        String erFridayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\erFridayAday.csv";
-        String erFridayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\erFridayBday.csv";
-        String fridayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\fridayAday.csv";
-        String fridayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\fridayBday.csv";
-        String mondayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\mondayAday.csv";
-        String mondayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\mondayBday.csv";
-        String thursdayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\thursdayAday.csv";
-        String thursdayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\thursdayBday.csv";
-        String wensdayAdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\wensdayAday.csv";
-        String wensdayBdayFn = "C:\\Users\\bpemberton\\IdeaProjects\\ab-schedule-list\\src\\periodsCSV\\wensdayBday.csv";
-
-        Stack<Period> erFridayAdayStack = createPeriodStack(erFridayAdayFn);
-        Stack<Period> erFridayBdayStack = createPeriodStack(erFridayBdayFn);
-        Stack<Period> fridayAdayStack = createPeriodStack(fridayAdayFn);
-        Stack<Period> fridayBdayStack = createPeriodStack(fridayBdayFn);
-        Stack<Period> mondayAdayStack = createPeriodStack(mondayAdayFn);
-        Stack<Period> mondayBdayStack = createPeriodStack(mondayBdayFn);
-        Stack<Period> thursdayAdayStack = createPeriodStack(thursdayAdayFn);
-        Stack<Period> thursdayBdayStack = createPeriodStack(thursdayBdayFn);
-        Stack<Period> wensdayAdayStack = createPeriodStack(wensdayAdayFn);
-        Stack<Period> wensdayBdayStack = createPeriodStack(wensdayBdayFn);
-
+    /* Printing List */
         for (SchoolDay s : schoolDays) { // foreach grade in grades
       System.out.println(
           s.getLocalDate() + " " + s.getDayFlag() + " " + s.getDayType()); // print that grade
