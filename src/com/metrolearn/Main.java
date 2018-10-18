@@ -80,14 +80,7 @@ public class Main {
 
     /* Printing List */
     for (SchoolDay s : schoolDays) { // foreach grade in grades
-      System.out.println(
-          s.getLocalDate()
-              + " "
-              + s.getDayFlag()
-              + " "
-              + s.getDayType()
-              + " "
-              + s.getPeriods()); // print that grade
+      System.out.println(s.getPeriodsforCal()); // print that grade
     }
   }
 

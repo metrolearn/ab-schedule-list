@@ -4,6 +4,9 @@ import enums.DayFlag;
 import enums.DayType;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -34,6 +37,50 @@ public class SchoolDay {
     this.periods = periods;
   }
 
+  public String getPeriodsforCal() {
+
+    String periodStr = null;
+    String dayStr = null;
+    // createEvent('Test 11 Landing',
+    //                    new Date('October 21, 2018  8:15:00 AM PDT'),
+    //    new Date
+    // ('October 21, 2018  8:30:00 AM PDT'));
+
+    if (this.dayType != null || this.dayType != null) {
+
+      String pStr = this.dayFlag.toString() + " " + this.dayType.toString();
+      String dDate = localDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
+      dayStr = "createAllDayEvent('" + pStr + "', new Date('" + dDate + "'));\n";
+
+      for (Period p : periods) {
+
+        String s1 = "createEvent('";
+        String sDescription = p.getName();
+        String s2 = "', new Date('";
+        String sBegin =
+            localDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))
+                + " "
+                + p.getBegin()
+                    .format(
+                        DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+                            .withZone(ZoneId.systemDefault()));
+        String s3 = "'), new Date('";
+        String sEnd = "October 21, 2018  8:30:00 AM PDT";
+        String s5 = "'))";
+        sEnd =
+            localDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))
+                + " "
+                + p.getEnd()
+                    .format(
+                        DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+                            .withZone(ZoneId.systemDefault()));
+        periodStr = s1 + sDescription + s2 + sBegin + s3 + sEnd + s5 + ";";
+      }
+
+    }
+      return "hscal."+dayStr + "hscal."+periodStr;
+
+  }
   public LocalDate getLocalDate() {
     return localDate;
   }
