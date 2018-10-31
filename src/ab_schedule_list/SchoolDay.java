@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -82,6 +84,16 @@ public class SchoolDay {
 
   public LocalDate getLocalDate() {
     return localDate;
+  }
+
+  //  "Wed, 10/24 2:15 PM"
+  public String getLocalDateShort() {
+    String abvDayOfWeek =
+        localDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US).toString();
+    String dayOfWeekNum = (new Integer(localDate.getDayOfWeek().getValue())).toString();
+    String dayOfMonthNum = (new Integer(localDate.getMonth().getValue())).toString();
+
+    return abvDayOfWeek + " " + dayOfWeekNum + "/" + dayOfMonthNum;
   }
 
   public void setLocalDate(LocalDate localDate) {

@@ -77,8 +77,50 @@ public class Main {
         wensdayBdayStack);
 
     /* Printing List */
+    Room313ToBookedCSVPrint(schoolDays);
+
+    //    printforGCal(schoolDays);
+
+  }
+
+  private static void printforGCal(Stack<SchoolDay> schoolDays) {
+    for (SchoolDay s : schoolDays) {
+      System.out.println(s.getPeriodsforCal());
+    }
+  }
+
+  private static void Room313ToBookedCSVPrint(Stack<SchoolDay> schoolDays) {
     for (SchoolDay s : schoolDays) { // foreach grade in grades
-      System.out.println(s.getPeriodsforCal()); // print that grade
+
+      Stack<Period> periods = s.getPeriods();
+
+      if (periods != null) {
+        for (Period p : periods) {
+          String pName = p.getName();
+          if (pName.compareTo("Period 1") == 0
+              || pName.compareTo("Period 3") == 0
+              || pName.compareTo("Period 7") == 0) {
+
+            String str =
+                "\"bpemberton@apps4pps.net\",\"[Technology Location] Room 313 Computer Lab | 29 CPU's, 1 Teacher Workstation\","
+                    + "\"HS CLASS "
+                    + pName
+                    + "\", \"--\" ,"
+                    + "\""
+                    + s.getLocalDate()
+                    + " "
+                    + p.getBegin()
+                    + "\","
+                    + "\""
+                    + s.getLocalDate()
+                    + " "
+                    + p.getEnd()
+                    + "\"";
+
+            System.out.println(str);
+          }
+        }
+      }
     }
   }
 
