@@ -39,7 +39,7 @@ public class SchoolDay {
 
   public String getPeriodsforCal() {
 
-    String periodStr = null;
+    String periodStr = "";
     String dayStr = null;
     // createEvent('Test 11 Landing',
     //                    new Date('October 21, 2018  8:15:00 AM PDT'),
@@ -74,13 +74,12 @@ public class SchoolDay {
                     .format(
                         DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
                             .withZone(ZoneId.systemDefault()));
-        periodStr = s1 + sDescription + s2 + sBegin + s3 + sEnd + s5 + ";";
+        periodStr += "hscal." + s1 + sDescription + s2 + sBegin + s3 + sEnd + s5 + ";\n";
       }
-
     }
-      return "hscal."+dayStr + "hscal."+periodStr;
-
+    return "hscal." + dayStr + periodStr;
   }
+
   public LocalDate getLocalDate() {
     return localDate;
   }

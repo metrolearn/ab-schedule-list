@@ -17,8 +17,6 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.util.Stack;
 
-import static java.time.temporal.TemporalAdjusters.lastInMonth;
-
 public class Main {
 
   private static final String ER_FRIDAY_ADAY_FN = "periodsCSV/erFridayAday.csv";
@@ -61,7 +59,7 @@ public class Main {
     /* Set Basis for AB Days*/
     setABDays(nonSchoolDays, schoolDays, ABDays, startOfYear);
     /* Set Day Flags based on AB Days and Days of the week */
-    setDayFlags(schoolDays);
+    setDayType(schoolDays);
     /* Set Periods Based on days */
     setPeriods(
         schoolDays,
@@ -98,38 +96,55 @@ public class Main {
       Stack<Period> thursdayBdayStack,
       Stack<Period> wensdayAdayStack,
       Stack<Period> wensdayBdayStack) {
+
+    Stack<LocalDate> erf = new Stack<LocalDate>();
+    erf.add(LocalDate.of(2018, 9, 28));
+    erf.add(LocalDate.of(2018, 10, 26));
+    erf.add(LocalDate.of(2018, 11, 30));
+    erf.add(LocalDate.of(2018, 12, 14));
+    erf.add(LocalDate.of(2019, 1, 25));
+    erf.add(LocalDate.of(2019, 2, 22));
+    erf.add(LocalDate.of(2019, 3, 22));
+    erf.add(LocalDate.of(2019, 4, 26));
+    erf.add(LocalDate.of(2019, 5, 31));
+
     for (SchoolDay s : schoolDays) {
       DayOfWeek currDayOfWeek = s.getLocalDate().getDayOfWeek();
       DayType currDayType = s.getDayType();
-      LocalDate lfom = s.getLocalDate().with(lastInMonth(DayOfWeek.FRIDAY));
+      LocalDate currDate = s.getLocalDate();
       switch (currDayOfWeek) {
         case MONDAY:
-          if (currDayType == DayType.AReg) s.setPeriods(mondayAdayStack);
-          if (currDayType == DayType.BReg) s.setPeriods(mondayBdayStack);
+          if (currDayType == DayType.A_Regular) s.setPeriods(mondayAdayStack);
+          if (currDayType == DayType.B_Regular) s.setPeriods(mondayBdayStack);
         case TUESDAY:
-          if (currDayType == DayType.AMet) s.setPeriods(tuesdayAdayStack);
-          if (currDayType == DayType.BMet) s.setPeriods(tuesdayBdayStack);
+          if (currDayType == DayType.A_Metro) s.setPeriods(tuesdayAdayStack);
+          if (currDayType == DayType.B_Metro) s.setPeriods(tuesdayBdayStack);
           break;
         case WEDNESDAY:
-          if (currDayType == DayType.AFlx) s.setPeriods(wensdayAdayStack);
-          if (currDayType == DayType.BFlx) s.setPeriods(wensdayBdayStack);
+          if (currDayType == DayType.A_Flex) s.setPeriods(wensdayAdayStack);
+          if (currDayType == DayType.B_Flex) s.setPeriods(wensdayBdayStack);
           break;
         case THURSDAY:
-          if (currDayType == DayType.AGLMet) s.setPeriods(thursdayAdayStack);
-          if (currDayType == DayType.BGLMet) s.setPeriods(thursdayBdayStack);
+          if (currDayType == DayType.A_GL_Metro) s.setPeriods(thursdayAdayStack);
+          if (currDayType == DayType.B_GL_Metro) s.setPeriods(thursdayBdayStack);
           break;
           /* Extra logic for Early Release fridays*/
         case FRIDAY:
-          if (currDayType == DayType.AFri) {
+          if (currDayType == DayType.A_Friday) {
             s.setPeriods(fridayAdayStack);
-            if (lfom == s.getLocalDate()) s.setPeriods(erFridayAdayStack);
-            s.setDayType(DayType.ErF);
           }
-          if (currDayType == DayType.BFri) {
+          if (currDayType == DayType.B_Friday) {
             s.setPeriods(fridayBdayStack);
-            if (lfom == s.getLocalDate()) s.setPeriods(erFridayBdayStack);
-            s.setDayType(DayType.ErF);
           }
+          if (erf.search(currDate) != -1) {
+            if (s.getDayType() == DayType.A_Friday) {
+              s.setDayType(DayType.Early_Release_Friday);
+              s.setPeriods(erFridayAdayStack);
+            } else {
+              s.setPeriods(erFridayBdayStack);
+            }
+          }
+
           /* For one "Last friday of school month" not Georgian calendar month */
           if (s.getLocalDate() == LocalDate.of(2019, Month.MARCH, 22)) {
             s.setPeriods(erFridayBdayStack);
@@ -169,30 +184,32 @@ public class Main {
     return periods;
   }
 
-  private static void setDayFlags(Stack<SchoolDay> schoolDays) {
+  private static void setDayType(Stack<SchoolDay> schoolDays) {
+
     for (SchoolDay s : schoolDays) {
       DayOfWeek currDayOfWeek = s.getLocalDate().getDayOfWeek();
       DayFlag currDayFlag = s.getDayFlag();
+
       switch (currDayOfWeek) {
         case MONDAY:
-          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AReg);
-          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BReg);
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.A_Regular);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.B_Regular);
           break;
         case TUESDAY:
-          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AMet);
-          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BMet);
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.A_Metro);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.B_Metro);
           break;
         case WEDNESDAY:
-          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AFlx);
-          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BFlx);
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.A_Flex);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.B_Flex);
           break;
         case THURSDAY:
-          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AGLMet);
-          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BGLMet);
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.A_GL_Metro);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.B_GL_Metro);
           break;
         case FRIDAY:
-          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.AFri);
-          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.BFri);
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.A_Friday);
+          if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.B_Friday);
           break;
       }
     }
