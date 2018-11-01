@@ -29,8 +29,8 @@ public class Main {
   private static final String TUESDAY_BDAY_FN = "periodsCSV/tuesdayBday.csv";
   private static final String THURSDAY_ADAY_FN = "periodsCSV/thursdayAday.csv";
   private static final String THURSDAY_BDAY_FN = "periodsCSV/thursdayBday.csv";
-  private static final String WENSDAY_ADAY_FN = "periodsCSV/wensdayAday.csv";
-  private static final String WENSDAY_BDAY_FN = "periodsCSV/wensdayBday.csv";
+  private static final String WEDNESDAY_ADAY_FN = "periodsCSV/wensdayAday.csv";
+  private static final String WEDNESDAY_BDAY_FN = "periodsCSV/wensdayBday.csv";
 
   public static void main(String[] args) {
 
@@ -47,8 +47,8 @@ public class Main {
     Stack<Period> tuesdayBdayStack = createPeriodStack(TUESDAY_BDAY_FN);
     Stack<Period> thursdayAdayStack = createPeriodStack(THURSDAY_ADAY_FN);
     Stack<Period> thursdayBdayStack = createPeriodStack(THURSDAY_BDAY_FN);
-    Stack<Period> wensdayAdayStack = createPeriodStack(WENSDAY_ADAY_FN);
-    Stack<Period> wensdayBdayStack = createPeriodStack(WENSDAY_BDAY_FN);
+    Stack<Period> wednesdayAdayStack = createPeriodStack(WEDNESDAY_ADAY_FN);
+    Stack<Period> wednesdayBdayStack = createPeriodStack(WEDNESDAY_BDAY_FN);
 
     /*Defining ABDays */
     addABDays(ABDays);
@@ -73,16 +73,16 @@ public class Main {
         tuesdayBdayStack,
         thursdayAdayStack,
         thursdayBdayStack,
-        wensdayAdayStack,
-        wensdayBdayStack);
+        wednesdayAdayStack,
+        wednesdayBdayStack);
 
-    /* Printing List */
+    /* Printing CSV format for mlcpdx.com/booked for just periods 1,3,7
+     * As Periods 1,3,7 are in the computer lab */
     Room313ToBookedCSVPrint(schoolDays);
-
-    //    printforGCal(schoolDays);
-
   }
 
+  /*Printing in line Google App (Calendar) Script
+   *Output can be used in script.google.com  */
   private static void printforGCal(Stack<SchoolDay> schoolDays) {
     for (SchoolDay s : schoolDays) {
       System.out.println(s.getPeriodsforCal());
@@ -136,8 +136,8 @@ public class Main {
       Stack<Period> tuesdayBdayStack,
       Stack<Period> thursdayAdayStack,
       Stack<Period> thursdayBdayStack,
-      Stack<Period> wensdayAdayStack,
-      Stack<Period> wensdayBdayStack) {
+      Stack<Period> wednesdayAdayStack,
+      Stack<Period> wednesdayBdayStack) {
 
     Stack<LocalDate> erf = new Stack<LocalDate>();
     erf.add(LocalDate.of(2018, 9, 28));
@@ -163,8 +163,8 @@ public class Main {
           if (currDayType == DayType.B_Metro) s.setPeriods(tuesdayBdayStack);
           break;
         case WEDNESDAY:
-          if (currDayType == DayType.A_Flex) s.setPeriods(wensdayAdayStack);
-          if (currDayType == DayType.B_Flex) s.setPeriods(wensdayBdayStack);
+          if (currDayType == DayType.A_Flex) s.setPeriods(wednesdayAdayStack);
+          if (currDayType == DayType.B_Flex) s.setPeriods(wednesdayBdayStack);
           break;
         case THURSDAY:
           if (currDayType == DayType.A_GL_Metro) s.setPeriods(thursdayAdayStack);
