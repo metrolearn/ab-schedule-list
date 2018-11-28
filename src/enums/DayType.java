@@ -3,7 +3,7 @@ package enums;
 public enum DayType {
   A_Regular,
   B_Regular,
-  A_Flex,
+  Check_And_Connect,
   B_Flex,
   A_Metro,
   B_Metro,

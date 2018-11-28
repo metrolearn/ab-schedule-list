@@ -163,7 +163,7 @@ public class Main {
           if (currDayType == DayType.B_Metro) s.setPeriods(tuesdayBdayStack);
           break;
         case WEDNESDAY:
-          if (currDayType == DayType.A_Flex) s.setPeriods(wednesdayAdayStack);
+          if (currDayType == DayType.Check_And_Connect) s.setPeriods(wednesdayAdayStack);
           if (currDayType == DayType.B_Flex) s.setPeriods(wednesdayBdayStack);
           break;
         case THURSDAY:
@@ -242,7 +242,7 @@ public class Main {
           if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.B_Metro);
           break;
         case WEDNESDAY:
-          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.A_Flex);
+          if (currDayFlag == DayFlag.Aday) s.setDayType(DayType.Check_And_Connect);
           if (currDayFlag == DayFlag.Bday) s.setDayType(DayType.B_Flex);
           break;
         case THURSDAY:
